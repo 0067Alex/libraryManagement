@@ -56,7 +56,10 @@ public class Book {
         this.publisher = publisher;
     }
     //Availability
-    public boolean isAvailable() {
+    public boolean setAvailable(boolean available) {
+        this.available = available;
+    }
+        public boolean isAvailable() {
         return available;
     }
 

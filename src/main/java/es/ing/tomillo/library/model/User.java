@@ -67,6 +67,7 @@ public class User {
         System.out.println(book.getTitle()+" is not available");}
         else {
             borrowedBooks.add(book);
+            book.setAvailable(false);
             System.out.println(book.getTitle() + " borrowed for the next 15 minutes");
         }
     }
