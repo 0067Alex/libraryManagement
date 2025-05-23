@@ -121,6 +121,8 @@ public class Library {
                     String author = scanner.nextLine();
                     System.out.print("Enter book ISBN: ");
                     isbn = scanner.nextLine();
+                    System.out.print("Enter book publisher: ");
+                    String publisher = scanner.nextLine();
                     //book = new Book(title, author, isbn);
                     library.addBook(book);
                     break;
