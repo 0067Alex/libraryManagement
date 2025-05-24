@@ -23,12 +23,7 @@ public class Library {
         // Cargar datos de ejemplo
         loadSampleData();
     }
-
-    private boolean isValidBookData(String title, String author, String publisher, String isbn, Year publicationYear) {
-        return title != null && !title.trim().isEmpty() && author != null && !author.trim().isEmpty() && publisher != null && !publisher.trim().isEmpty() && isbn != null && !isbn.trim().isEmpty() && publicationYear != null && !publicationYear.toString().isEmpty();
-    }
-
-    private void loadSampleData() {
+        private void loadSampleData() {
         // Cargar usuarios de ejemplo
         users.addAll(SampleData.SAMPLE_USERS);
 
@@ -127,7 +122,7 @@ public class Library {
         int id = 0;
 
         while (!quit) {
-            System.out.println("Menu Options:");
+            System.out.println("-------------------\n   Menu Options:");
             System.out.println("1. Add Book");
             System.out.println("2. Add User");
             System.out.println("3. Borrow Book");
@@ -137,7 +132,10 @@ public class Library {
             System.out.println("7. List Available Books");
             System.out.println("8. List Users");
             System.out.println("Q. Quit");
+            System.out.println("H. Need more help? use: help");
+            System.out.print("--> Don't know how to choose an option? use: tutorial\n");
             System.out.print("Choose an option: ");
+
             String option = scanner.nextLine().toLowerCase().replaceAll("[^a-z0-9]", ""); // para que automáticamente pase todo a minúscula y a no tener espacios ni puntos//
 
             switch (option) {
@@ -181,7 +179,7 @@ public class Library {
                         }
                         int letterCount = publisher.replaceAll("[^\\p{L}]", "").length();
                         if (letterCount < 4) {
-                            System.out.println("Publisher must contain at least 4 characters.");
+                            System.out.println("Publisher must contain at least 4 characters. Not only numbers");
                             publisher = "";
                             continue;
                         }
@@ -291,8 +289,12 @@ public class Library {
                         case "q", "quit", "qquit":
                             quit = true;
                             break;
+                        case "h", "help", "hhelp", "morehelp":
+                        case "tutorial":
+                            System.out.println("For example to execute the first option you can use: \n1\nadd book \n1. add book \nAnd so on.");
+                            break;
                         default:
-                            System.out.println("Invalid option.");
+                            System.out.println("Invalid option.\n For example to execute the first option you can use: \n1\nadd book \n1. add book");
                     }
             }
 
