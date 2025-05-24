@@ -43,9 +43,9 @@ public class Library {
     }
 
     public void addBook(Book book) {
-        books.add(book); // Simplemente añadir el libro a la lista
+        books.add(book);{// Simplemente añadir el libro a la lista
     }
-
+}
 
     // TODO: Implementar método prestarLibro según el ejercicio 3
     public void borrowBook(User userWhoBorrows, Book borrowedBook) {
@@ -281,7 +281,6 @@ public class Library {
                         case "6", "searchbookbyauthor", "6searchbookbyauthor":
                             System.out.print("Enter book author: ");
                             author = scanner.nextLine();
-                            book = library.searchBookByAuthor(author);
                             if (book != null) {
                                 System.out.println(book);
                             } else {
