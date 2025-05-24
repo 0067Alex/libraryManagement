@@ -116,7 +116,7 @@ public class Library {
         System.out.println("\n\nMade by Sir Alex\n\n");
         Library library = new Library();
         Scanner scanner = new Scanner(System.in);
-        boolean exit = false;
+        boolean quit = false;
         String title;
         String author;
         String publisher;
@@ -126,7 +126,7 @@ public class Library {
         User user = null;
         int id = 0;
 
-        while (!exit) {
+        while (!quit) {
             System.out.println("Menu Options:");
             System.out.println("1. Add Book");
             System.out.println("2. Add User");
@@ -136,13 +136,13 @@ public class Library {
             System.out.println("6. Search Book by Author");
             System.out.println("7. List Available Books");
             System.out.println("8. List Users");
-            System.out.println("9. Exit");
+            System.out.println("Q. Quit");
             System.out.print("Choose an option: ");
-            int option = scanner.nextInt();
+            String option = scanner.nextLine().trim().toLowerCase(); // para que automñaticamente pase todo a minúscula
             scanner.nextLine(); // Consume newline
 
             switch (option) {
-                case 1:
+                case "1","add Book", "1. add Book":
                     //Title
                     title = "";
                     while (title.isBlank()) {
@@ -224,10 +224,10 @@ public class Library {
                         library.addBook(book);
                         System.out.println((book.getTitle()) + " by " + (book.getAuthor()) + " added successfully.");
                         System.out.println("Assigned Book ID: " + book.getBookID());
-                        System.out.println("Entry date: " + book.getAddedToLibrary());
-                        break;}
+                        System.out.println("Entry date: " + book.getAddedToLibrary());}
+                        break;
                         //
-                        case 2:
+                        case "2", "add user", "2. add user":
                             System.out.print("Enter user name: ");
                             String name = scanner.nextLine();
                             System.out.print("Enter user ID: ");
@@ -235,7 +235,7 @@ public class Library {
                             user = new User(name, id);
                             library.addUser(user);
                             break;
-                        case 3:
+                        case "3", "borrow book", "3. borrow book":
                             System.out.print("Enter user ID: ");
                             id = scanner.nextInt();
                             scanner.nextLine(); // Consume newline
@@ -249,7 +249,7 @@ public class Library {
                                 System.out.println("User or book not found.");
                             }
                             break;
-                        case 4:
+                        case "4", "return book", "4. return book":
                             System.out.print("Enter user ID: ");
                             id = scanner.nextInt();
                             scanner.nextLine(); // Consume newline
@@ -263,7 +263,7 @@ public class Library {
                                 System.out.println("User or book not found.");
                             }
                             break;
-                        case 5:
+                        case "5", "search book by title", "5. search book by title":
                             System.out.print("Enter book title: ");
                             title = scanner.nextLine();
                             book = library.searchBookByTitle(title);
@@ -273,7 +273,7 @@ public class Library {
                                 System.out.println("Book not found.");
                             }
                             break;
-                        case 6:
+                        case "6", "search book by author", "6. search book by author":
                             System.out.print("Enter book author: ");
                             author = scanner.nextLine();
                             book = library.searchBookByAuthor(author);
@@ -283,14 +283,14 @@ public class Library {
                                 System.out.println("Book not found.");
                             }
                             break;
-                        case 7:
+                        case "7", "list available books", "7. list available books":
                             library.listAvailableBooks();
                             break;
-                        case 8:
+                        case "8", "list users", "8. list users":
                             library.listUsers();
                             break;
-                        case 9:
-                            exit = true;
+                        case "q", "quit", "q. quit":
+                            quit = true;
                             break;
                         default:
                             System.out.println("Invalid option.");
