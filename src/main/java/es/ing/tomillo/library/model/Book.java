@@ -20,6 +20,7 @@ public class Book {
     private Date addedToLibrary;     //Importé java.util.Date
     private boolean available;
     private boolean reserved;
+    public boolean borrowed;
 
     // TODO: Implementar constructor según el ejercicio 1
     public Book(String title, String author, String publisher, String isbn, Year publicationYear) {
@@ -104,7 +105,17 @@ public class Book {
     public Date getAddedToLibrary() {
         return addedToLibrary;
     }
-
+    // Getters and Setters for borrowedBy
+    public User getBorrowedBy() {
+        return null;
+    }
+    public boolean isBorrowed() {
+        return borrowed;
+    }
+    public void borrowBook(User user) {
+        borrowed = true;
+        user.borrowBook(this);
+    }
 
     // TODO: Implementar método toString según el ejercicio 1
     @Override

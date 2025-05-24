@@ -67,7 +67,8 @@ public class User {
             System.out.println("Limit of borrowed books reached");
         }
         else if (!book.isAvailable()) {
-        System.out.println(book.getTitle()+" is not available");}
+            System.out.println(book.getTitle()+" is not available");
+        }
         else {
             borrowedBooks.add(book);
             book.setAvailable(false);
@@ -87,6 +88,23 @@ public class User {
     }
     // TODO: Implementar método reservarLibro según el ejercicio 2
     // Debe permitir reservar libros que no están disponibles
+    public String reserveBookIfNotAvailable (Book book) {
+        if (reservedBooks.contains(book)) {
+            return "You have already reserved the book '" + book.getTitle() + "'.";
+        } else if (book.isReserved()) {
+            return "The book '" + book.getTitle() + "' is already reserved by another user.";
+        } else if (borrowedBooks.contains(book)) {
+            return "You have already borrowed the book '" + book.getTitle() + "'. Reservation is not needed.";
+        } else if (book.isAvailable()) {
+            return "The book '" + book.getTitle() + "' is currently available. You can borrow it instead of reserving.";
+        } else if (reservedBooks.size() >= MAX_RESERVED_BOOKS) {
+            return "You have reached the maximum reservation limit of " + MAX_RESERVED_BOOKS + " book(s).";
+        } else {
+            reservedBooks.add(book);
+            book.setReserved(true);
+            return "The book '" + book.getTitle() + "' has been reserved successfully.";
+        }
+    }
 
 // Method for reserving a book
 public String reserveBook(Book book) {

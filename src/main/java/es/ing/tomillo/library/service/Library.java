@@ -47,10 +47,20 @@ public class Library {
 
 
     // TODO: Implementar método prestarLibro según el ejercicio 3
-    public void borrowBook(User user, Book book) {
-        user.borrowBook(book);
-    }
+            public void borrowBook(User userWhoBorrows, Book borrowedBook) {
+            // Check if the book is already borrowed
+            if (borrowedBook.isBorrowed()) {
+                System.out.println("Sorry, the book '" + borrowedBook.getTitle() +
+                        "' is already borrowed by " + borrowedBook.getBorrowedBy().getName() + ".");
+                return;
+            }
+            // Mark the book as borrowed by the user
+            borrowedBook.borrowBook(userWhoBorrows);
 
+            // Confirm the borrowing action
+            System.out.println("The book '" + borrowedBook.getTitle() +
+                    "' has been successfully borrowed by " + userWhoBorrows.getName() + ".");
+        }}
     // TODO: Implementar método devolverLibro según el ejercicio 3
     public void returnBook(User user, Book book) {
         user.returnBook(book);
@@ -84,24 +94,7 @@ public class Library {
     }
 
     public static void main(String[] args) {
-        System.out.println("  _____  ");
-        System.out.println(" |_   _| ");
-        System.out.println("   | |   ");
-        System.out.println("   | |   ");
-        System.out.println("  _| |_  ");
-        System.out.println(" |_____| ");
-        System.out.println(" _   _  ");
-        System.out.println(" | \\ | | ");
-        System.out.println(" |  \\| | ");
-        System.out.println(" | |\\  | ");
-        System.out.println(" | | \\ | ");
-        System.out.println(" |_|  \\_|");
-        System.out.println("  ____  ");
-        System.out.println(" / ___| ");
-        System.out.println("| |  _  ");
-        System.out.println("| |_| | ");
-        System.out.println(" \\____| ");
-        System.out.println("\n\nMade by Sir Alex\n\n");
+        System.out.println("\n\n\nMade by Sir Alex\n\n\n");
         Library library = new Library();
         Scanner scanner = new Scanner(System.in);
         boolean quit = false;
