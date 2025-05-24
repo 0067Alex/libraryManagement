@@ -10,7 +10,7 @@ public class Book {
     // - isbn (String)
     // - available (boolean)
 
-    private static int nextID = 0;
+    private static int nextBookID = 0;
     private final int bookID;
     private String title;
     private String author;
@@ -19,10 +19,11 @@ public class Book {
     private Year publicationYear; //Importé java.time.Year
     private Date addedToLibrary;     //Importé java.util.Date
     private boolean available;
+    private boolean reserved;
 
     // TODO: Implementar constructor según el ejercicio 1
     public Book(String title, String author, String publisher, String isbn, Year publicationYear) {
-        this.bookID = nextID++;
+        this.bookID = nextBookID++;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
@@ -30,6 +31,7 @@ public class Book {
         this.publicationYear = publicationYear;
         this.addedToLibrary = new Date();
         this.available = true;
+        this.reserved = false;
     }
 
     // TODO: Implementar getters y setters según el ejercicio 1
@@ -37,7 +39,7 @@ public class Book {
     public int getBookID() {
         return bookID;
     }
-    //Title
+    //Title getter setter
     public String getTitle() {
         return title;
     }
@@ -46,7 +48,7 @@ public class Book {
         this.title = title;
     }
 
-    //Author
+    //Author getter setter
     public String getAuthor() {
         return author;
     }
@@ -55,7 +57,7 @@ public class Book {
         this.author = author;
     }
 
-    //ISBN
+    //ISBN getter setter
     public String getIsbn() {
         return isbn;
     }
@@ -64,7 +66,7 @@ public class Book {
         this.isbn = isbn;
     }
 
-    //Publisher
+    //Publisher getter setter
     public String getPublisher() {
         return publisher;
     }
@@ -73,7 +75,7 @@ public class Book {
         this.publisher = publisher;
     }
 
-    //Publication Year
+    //Publication Year getter setter
     public Year getPublicationYear() {
         return publicationYear;
     }
@@ -81,8 +83,15 @@ public class Book {
     public void setPublicationYear(Year publicationYear) {
         this.publicationYear = publicationYear;
     }
-
-    //Availability
+    //Reserved getter setter
+    public boolean setReserved(boolean reserved) {
+        this.reserved = true;
+        return reserved;
+    }
+    public boolean isReserved() {
+        return reserved;
+    }
+    //Availability getter setter
     public boolean setAvailable(boolean available) {
         this.available = true;
         return available;
@@ -91,7 +100,7 @@ public class Book {
     public boolean isAvailable() {
         return available;
     }
-    //Added to library Date
+    //Added to library Date getter
     public Date getAddedToLibrary() {
         return addedToLibrary;
     }
@@ -108,6 +117,7 @@ public class Book {
                 ", ISBN='" + isbn + '\'' +
                 ", Year=" + publicationYear +
                 ", Available=" + available +
+                ", Reserved=" + reserved +
                 '}';
     }
     // TODO: Implementar método equals para comparar libros por ISBN

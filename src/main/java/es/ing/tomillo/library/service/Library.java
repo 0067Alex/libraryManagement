@@ -2,8 +2,7 @@ package es.ing.tomillo.library.service;
 
 import es.ing.tomillo.library.model.Book;
 import es.ing.tomillo.library.model.User;
-import es.ing.tomillo.library.util.SampleData;
-import java.util.Date;
+
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,29 +15,23 @@ public class Library {
     // Lista de libros
     private final List<Book> books;
 
+    //Getter para listas
+    public List<User> getUsers() {
+        return users;
+    }
+    public List<Book> getBooks() {
+        return books;
+    }
+
     public Library() {
         this.users = new ArrayList<>();
         this.books = new ArrayList<>();
-
-        // Cargar datos de ejemplo
-        loadSampleData();
-    }
-        private void loadSampleData() {
-        // Cargar usuarios de ejemplo
-        users.addAll(SampleData.SAMPLE_USERS);
-
-        // Cargar libros de ejemplo
-
-
-        System.out.println("Datos de ejemplo cargados:");
-        System.out.println("- " + users.size() + " usuarios");
-        System.out.println("- " + books.size() + " libros");
-    }
+          }
 
     // Mostrar por pantalla todos los usuarios registrados en la biblioteca
     public void listUsers() {
         for (User user : users) {
-            System.out.println("ID: " + user.getId());
+            System.out.println("ID: " + user.getUserID());
             System.out.println("Nombre: " + user.getName());
             System.out.println("Número de libros reservados: " + user.getBookCount());
         }
@@ -81,9 +74,9 @@ public class Library {
 
     }
 
-    public User getUserById(int id) {
+    public User getUserById(int userID) {
         for (User user : users) {
-            if (user.getId() == id) {
+            if (user.getUserID() == userID) {
                 return user;
             }
         }
@@ -121,7 +114,7 @@ public class Library {
         User user = null;
         int id = 0;
 
-        while (!quit) {
+
             System.out.println("-------------------\n   Menu Options:");
             System.out.println("1. Add Book");
             System.out.println("2. Add User");
@@ -134,6 +127,7 @@ public class Library {
             System.out.println("Q. Quit");
             System.out.println("H. Need more help? use: help");
             System.out.print("--> Don't know how to choose an option? use: tutorial\n");
+        while (!quit) {
             System.out.print("Choose an option: ");
 
             String option = scanner.nextLine().toLowerCase().replaceAll("[^a-z0-9]", ""); // para que automáticamente pase todo a minúscula y a no tener espacios ni puntos//
@@ -228,8 +222,7 @@ public class Library {
                             System.out.print("Enter user name: ");
                             String name = scanner.nextLine();
                             System.out.print("Enter user ID: ");
-                            id = scanner.nextInt();
-                            user = new User(name, id);
+                            int userID = scanner.nextInt();
                             library.addUser(user);
                             break;
                         case "3", "borrowbook", "3borrowbook":

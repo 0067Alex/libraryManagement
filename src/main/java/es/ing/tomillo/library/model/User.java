@@ -16,17 +16,21 @@ public class User {
     // - nombre (String)
     // - id (int)
     // - librosPrestados (List de Libro)
+
+    private static int nextUserID = 0;
+    private int userID;
+    private String DNI;
     private String name;
-    private int id;
     private final List<Book> borrowedBooks;
     private static final int MAX_BORROWED_BOOKS = 5;
     private final List<Book> reservedBooks;
     private static final int MAX_RESERVED_BOOKS = 1;
 
     // Constructor con un maximo de 5 libros prestados
-    public User(String name, int id) {
+    public User(String DNI, String name) {
+        this.userID = nextUserID++;
+        this.DNI = DNI;
         this.name = name;
-        this.id = id;
         this.borrowedBooks = new ArrayList<>();
         this.reservedBooks = new ArrayList<>();
     }
@@ -40,14 +44,10 @@ public class User {
         this.name = name;
     }
 //ID
-    public int getId() {
-        return id;
+    public int getUserID() {
+        return userID;
     }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-//List borrowedBooks
+    //List borrowedBooks
     public List<Book> getBorrowedBooks() {
         return Collections.unmodifiableList(borrowedBooks);    //Ezequiel me explicó que la lista podría ser modificada desde el exterior, por eso use unmodifiableList//
 }
@@ -87,15 +87,55 @@ public class User {
     }
     // TODO: Implementar método reservarLibro según el ejercicio 2
     // Debe permitir reservar libros que no están disponibles
-    public void reserveBook(Book book) {
+
+// Method for reserving a book
+public String reserveBook(Book book) {
+    // Check if the user has reached the maximum reservation limit
+    if (reservedBooks.size() >= MAX_RESERVED_BOOKS) {
+        return "You have reached the maximum number of reserved books (" + MAX_RESERVED_BOOKS + ")";
     }
+
+    // Check if the book is already reserved by the user
+    if (reservedBooks.contains(book)) {
+        return "You have already reserved '" + book.getTitle() + "'";
+    }
+
+    // Check if the book is reserved by someone else
+    if (book.isReserved()) {
+        return "The book '" + book.getTitle() + "' is already reserved by someone else.";
+    }
+
+    // Check if the user has already borrowed the book
+    if (borrowedBooks.contains(book)) {
+        return "You have already borrowed '" + book.getTitle() + "', reservation is not allowed.";
+    }
+
+    // Check if the book is available and does not need a reservation
+    if (book.isAvailable()) {
+        return "This book is available for borrowing - no need to reserve.";
+    }
+
+    // If all conditions pass, reserve the book
+    reservedBooks.add(book);
+    book.setReserved(true); // Marks the book as reserved
+    return "'" + book.getTitle() + "' has been reserved successfully.";
+}
+
+
+    // Add this method to handle when a book is returned and notify reserved users
+public void checkReservedBook(Book book) {
+    if (reservedBooks.contains(book) && book.isAvailable()) {
+        System.out.println("The book you reserved '" + book.getTitle() + "' is now available!");
+        reservedBooks.remove(book);
+    }
+}
 
     // TODO: Implementar método toString para mostrar la información del usuario
     @Override
     public String toString() {
         return "User{" +
                 "name='" + name + '\'' +
-                ", id=" + id +
+                ", userID=" + userID +
                 ", borrowedBooks=" + borrowedBooks.size() +
                 '}';
     }
@@ -106,14 +146,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id;
+        return userID == user.userID;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(userID);
     }
 }
-
-
-
