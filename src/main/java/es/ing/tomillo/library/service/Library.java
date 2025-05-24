@@ -19,6 +19,7 @@ public class Library {
     public List<User> getUsers() {
         return users;
     }
+
     public List<Book> getBooks() {
         return books;
     }
@@ -26,7 +27,7 @@ public class Library {
     public Library() {
         this.users = new ArrayList<>();
         this.books = new ArrayList<>();
-          }
+    }
 
     // Mostrar por pantalla todos los usuarios registrados en la biblioteca
     public void listUsers() {
@@ -47,35 +48,56 @@ public class Library {
 
 
     // TODO: Implementar método prestarLibro según el ejercicio 3
-            public void borrowBook(User userWhoBorrows, Book borrowedBook) {
-            // Check if the book is already borrowed
-            if (borrowedBook.isBorrowed()) {
-                System.out.println("Sorry, the book '" + borrowedBook.getTitle() +
-                        "' is already borrowed by " + borrowedBook.getBorrowedBy().getName() + ".");
-                return;
-            }
-            // Mark the book as borrowed by the user
-            borrowedBook.borrowBook(userWhoBorrows);
+    public void borrowBook(User userWhoBorrows, Book borrowedBook) {
+        // Check if the book is already borrowed
+        if (borrowedBook.isBorrowed()) {
+            System.out.println("Sorry, the book '" + borrowedBook.getTitle() +
+                    "' is already borrowed by " + borrowedBook.getBorrowedBy().getName() + ".");
+            return;
+        }
+        // Mark the book as borrowed by the user
+        borrowedBook.borrowBook(userWhoBorrows);
 
-            // Confirm the borrowing action
-            System.out.println("The book '" + borrowedBook.getTitle() +
-                    "' has been successfully borrowed by " + userWhoBorrows.getName() + ".");
-        }}
+        // Confirm the borrowing action
+        System.out.println("The book '" + borrowedBook.getTitle() +
+                "' has been successfully borrowed by " + userWhoBorrows.getName() + ".");
+    }
+
     // TODO: Implementar método devolverLibro según el ejercicio 3
-    public void returnBook(User user, Book book) {
-        user.returnBook(book);
+    public void returnBook(User userThatReturns, Book bookThatIsReturned) {
+        if (!userThatReturns.hasBorrowed(bookThatIsReturned)) {
+            System.out.println("Error: The user has not borrowed this book.");
+            return;
+        }
+        // Remove the book from the user's borrowed list
+        userThatReturns.returnBook(bookThatIsReturned);
+
+        // Mark the book as available in the library (if maintaining an availability status)
+        bookThatIsReturned.setAvailable(true);
+
+        // Print confirmation message
+        System.out.println("The book '" + bookThatIsReturned.getTitle() + "' was successfully returned by " + userThatReturns.getName() + ".");
     }
 
     // TODO: Implementar método buscarLibroPorTitulo según el ejercicio 4
     public Book searchBookByTitle(String title) {
-
+    for (Book book : books){
+        if (book.getTitle().equals(title)){
+            return book;
+        }
+    }
         return null;
     }
 
     // TODO: Implementar método buscarLibroPorAutor según el ejercicio 4
-    public Book searchBookByAuthor(String author) {
-
-        return null;
+    public List<Book> searchBookByAuthor(String author) {
+        List<Book> booksByAuthor = new ArrayList<>();
+        for (Book book : books) {
+            if (book.getAuthor().equals(author)) {
+                booksByAuthor.add(book);
+            }
+        }
+            return booksByAuthor;
     }
 
     // TODO: Implementar método listarLibrosDisponibles según el ejercicio 5

@@ -105,7 +105,10 @@ public class User {
             return "The book '" + book.getTitle() + "' has been reserved successfully.";
         }
     }
-
+//Method para ver si el usuario ha pedido prestado el libro en cuestión
+    public boolean hasBorrowed(Book book) {
+        return borrowedBooks.contains(book);
+    }
 // Method for reserving a book
 public String reserveBook(Book book) {
     // Check if the user has reached the maximum reservation limit
