@@ -138,11 +138,10 @@ public class Library {
             System.out.println("8. List Users");
             System.out.println("Q. Quit");
             System.out.print("Choose an option: ");
-            String option = scanner.nextLine().trim().toLowerCase(); // para que automñaticamente pase todo a minúscula
-            scanner.nextLine(); // Consume newline
+            String option = scanner.nextLine().toLowerCase().replaceAll("[^a-z0-9]", ""); // para que automáticamente pase todo a minúscula y a no tener espacios ni puntos//
 
             switch (option) {
-                case "1","add Book", "1. add Book":
+                case "1","addbook", "1addbook":
                     //Title
                     title = "";
                     while (title.isBlank()) {
@@ -227,7 +226,7 @@ public class Library {
                         System.out.println("Entry date: " + book.getAddedToLibrary());}
                         break;
                         //
-                        case "2", "add user", "2. add user":
+                        case "2", "adduser", "2adduser":
                             System.out.print("Enter user name: ");
                             String name = scanner.nextLine();
                             System.out.print("Enter user ID: ");
@@ -235,7 +234,7 @@ public class Library {
                             user = new User(name, id);
                             library.addUser(user);
                             break;
-                        case "3", "borrow book", "3. borrow book":
+                        case "3", "borrowbook", "3borrowbook":
                             System.out.print("Enter user ID: ");
                             id = scanner.nextInt();
                             scanner.nextLine(); // Consume newline
@@ -249,7 +248,7 @@ public class Library {
                                 System.out.println("User or book not found.");
                             }
                             break;
-                        case "4", "return book", "4. return book":
+                        case "4", "returnbook", "4returnbook":
                             System.out.print("Enter user ID: ");
                             id = scanner.nextInt();
                             scanner.nextLine(); // Consume newline
@@ -263,7 +262,7 @@ public class Library {
                                 System.out.println("User or book not found.");
                             }
                             break;
-                        case "5", "search book by title", "5. search book by title":
+                        case "5", "searchbookbytitle", "5searchbookbytitle":
                             System.out.print("Enter book title: ");
                             title = scanner.nextLine();
                             book = library.searchBookByTitle(title);
@@ -273,7 +272,7 @@ public class Library {
                                 System.out.println("Book not found.");
                             }
                             break;
-                        case "6", "search book by author", "6. search book by author":
+                        case "6", "searchbookbyauthor", "6searchbookbyauthor":
                             System.out.print("Enter book author: ");
                             author = scanner.nextLine();
                             book = library.searchBookByAuthor(author);
@@ -283,13 +282,13 @@ public class Library {
                                 System.out.println("Book not found.");
                             }
                             break;
-                        case "7", "list available books", "7. list available books":
+                        case "7", "listavailablebooks", "7listavailablebooks":
                             library.listAvailableBooks();
                             break;
-                        case "8", "list users", "8. list users":
+                        case "8", "listusers", "8listusers":
                             library.listUsers();
                             break;
-                        case "q", "quit", "q. quit":
+                        case "q", "quit", "qquit":
                             quit = true;
                             break;
                         default:
