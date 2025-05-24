@@ -3,12 +3,8 @@ package es.ing.tomillo.library.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.Collections;
-import java.time.Year;
-import java.util.Date;
+
 
 
 public class User {
@@ -18,30 +14,30 @@ public class User {
     // - librosPrestados (List de Libro)
 
     private static int nextUserID = 0;
-    private int userID;
+    private final int userID;
+    private String userName;
     private String DNI;
-    private String name;
     private final List<Book> borrowedBooks;
     private static final int MAX_BORROWED_BOOKS = 5;
     private final List<Book> reservedBooks;
     private static final int MAX_RESERVED_BOOKS = 1;
 
     // Constructor con un maximo de 5 libros prestados
-    public User(String DNI, String name) {
+    public User(String DNI, String userName) {
         this.userID = nextUserID++;
+        this.userName = userName;
         this.DNI = DNI;
-        this.name = name;
         this.borrowedBooks = new ArrayList<>();
         this.reservedBooks = new ArrayList<>();
     }
 //Getters and Setters
 //Name
     public String getName() {
-        return name;
+        return userName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String userName) {
+        this.userName = userName;
     }
 //ID
     public int getUserID() {
@@ -155,7 +151,8 @@ public void checkReservedBook(Book book) {
     @Override
     public String toString() {
         return "User{" +
-                "name='" + name + '\'' +
+                "DNI='" + DNI + '\'' +
+                "name='" + userName + '\'' +
                 ", userID=" + userID +
                 ", borrowedBooks=" + borrowedBooks.size() +
                 '}';

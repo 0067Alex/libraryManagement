@@ -17,7 +17,7 @@ public class Book {
     private String publisher;
     private String isbn;
     private Year publicationYear; //Importé java.time.Year
-    private Date addedToLibrary;     //Importé java.util.Date
+    private final Date addedToLibrary;     //Importé java.util.Date
     private boolean available;
     private boolean reserved;
     public boolean borrowed;
