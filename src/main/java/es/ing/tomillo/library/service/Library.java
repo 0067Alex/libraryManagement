@@ -4,6 +4,7 @@ import es.ing.tomillo.library.model.Book;
 import es.ing.tomillo.library.model.User;
 import es.ing.tomillo.library.util.SampleData;
 
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -17,9 +18,13 @@ public class Library {
     public Library() {
         this.users = new ArrayList<>();
         this.books = new ArrayList<>();
-        
+
         // Cargar datos de ejemplo
         loadSampleData();
+    }
+
+    private boolean isValidBookData(String title, String author, String publisher, String isbn, Year publicationYear) {
+        return title != null && !title.trim().isEmpty() && author != null && !author.trim().isEmpty() && publisher != null && !publisher.trim().isEmpty() && isbn != null && !isbn.trim().isEmpty() && publicationYear != null && !publicationYear.toString().isEmpty();
     }
 
     private void loadSampleData() {
@@ -48,8 +53,9 @@ public class Library {
     }
 
     public void addBook(Book book) {
-
+        books.add(book); // Simplemente añadir el libro a la lista
     }
+
 
     // TODO: Implementar método prestarLibro según el ejercicio 3
     public void borrowBook(User user, Book book) {
@@ -123,8 +129,18 @@ public class Library {
                     isbn = scanner.nextLine();
                     System.out.print("Enter book publisher: ");
                     String publisher = scanner.nextLine();
-                    //book = new Book(title, author, isbn);
+                    System.out.print("Enter book publication year: ");
+                    Year publicationYear = Year.parse(scanner.next()); //year.parse... porque Scannet.Next Line no era válido para objetos Year.
+
+                    if (!library.isValidBookData(title, author, publisher, isbn, publicationYear)) {
+                        System.out.println("Error. title, author, publisher, isbn and publication year must be valid.");
+                        break;
+                    }
+                    book = new Book(title, author, publisher, isbn, publicationYear);
                     library.addBook(book);
+                    System.out.println(book.getTitle() + " added successfully.");
+                    System.out.println("Assigned Book ID: " + book.getBookID());
+                    System.out.println("Entry date: " + book.getAddedToLibrary());
                     break;
                 case 2:
                     System.out.print("Enter user name: ");
