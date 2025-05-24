@@ -3,11 +3,12 @@ package es.ing.tomillo.library.service;
 import es.ing.tomillo.library.model.Book;
 import es.ing.tomillo.library.model.User;
 import es.ing.tomillo.library.util.SampleData;
-
+import java.util.Date;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Library {
     // Lista de usuarios
@@ -95,11 +96,32 @@ public class Library {
     }
 
     public static void main(String[] args) {
+        System.out.println("  _____  ");
+        System.out.println(" |_   _| ");
+        System.out.println("   | |   ");
+        System.out.println("   | |   ");
+        System.out.println("  _| |_  ");
+        System.out.println(" |_____| ");
+        System.out.println(" _   _  ");
+        System.out.println(" | \\ | | ");
+        System.out.println(" |  \\| | ");
+        System.out.println(" | |\\  | ");
+        System.out.println(" | | \\ | ");
+        System.out.println(" |_|  \\_|");
+        System.out.println("  ____  ");
+        System.out.println(" / ___| ");
+        System.out.println("| |  _  ");
+        System.out.println("| |_| | ");
+        System.out.println(" \\____| ");
+        System.out.println("\n\nMade by Sir Alex\n\n");
         Library library = new Library();
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
         String title;
+        String author;
+        String publisher;
         String isbn;
+        Year publicationYear;
         Book book = null;
         User user = null;
         int id = 0;
@@ -121,98 +143,160 @@ public class Library {
 
             switch (option) {
                 case 1:
-                    System.out.print("Enter book title: ");
-                    title = scanner.nextLine();
-                    System.out.print("Enter book author: ");
-                    String author = scanner.nextLine();
-                    System.out.print("Enter book ISBN: ");
-                    isbn = scanner.nextLine();
-                    System.out.print("Enter book publisher: ");
-                    String publisher = scanner.nextLine();
-                    System.out.print("Enter book publication year: ");
-                    Year publicationYear = Year.parse(scanner.next()); //year.parse... porque Scannet.Next Line no era válido para objetos Year.
+                    //Title
+                    title = "";
+                    while (title.isBlank()) {
+                        System.out.print("Enter book title: ");
+                        title = scanner.nextLine().trim();
+                        if (title.isEmpty()) {
+                            System.out.println("Title cannot be empty.");
+                        }
+                    }
+                    //Author
+                    author = "";
+                    while (author.isBlank()) {
+                        System.out.print("Enter book author: ");
+                        author = scanner.nextLine().trim();
+                        if (author.isEmpty()) {
+                            System.out.println("Author cannot be empty.");
+                            continue;
+                        }
+                        int letterCount = author.replaceAll("[^\\p{L}]", "").length();
+                        if (letterCount < 2) {
+                            System.out.println("Author name must contain at least 2 letters.");
+                            author = "";
+                            continue;
+                        }
+                        if (author.matches(".*\\d.*")) {
+                            System.out.println("Author name cannot contain numbers. Please enter a valid name.");
+                            author = "";
+                        }
+                    }
+                    //Publisher
+                    publisher = "";
+                    while (publisher.isBlank()) {
+                        System.out.print("Enter book publisher: ");
+                        publisher = scanner.nextLine().trim();
+                        if (publisher.isEmpty()) {
+                            System.out.println("Publisher cannot be empty.");
+                        }
+                        int letterCount = publisher.replaceAll("[^\\p{L}]", "").length();
+                        if (letterCount < 4) {
+                            System.out.println("Publisher must contain at least 4 characters.");
+                            publisher = "";
+                            continue;
+                        }
+                    //ISBN
+                        isbn = "";
+                        while (isbn.isBlank()) {
+                            System.out.print("Enter book ISBN: ");
+                            isbn = scanner.nextLine().trim();
+                            if (isbn.isEmpty()) {
+                                System.out.println("ISBN cannot be empty.");
+                                continue;
+                            }
+                            String cleanedIsbn = isbn.replaceAll("-", "");
+                            boolean isValidIsbn10 = Pattern.matches("\\d{9}[\\dX]", cleanedIsbn);
+                            boolean isValidIsbn13 = Pattern.matches("\\d{13}", cleanedIsbn);
 
-                    if (!library.isValidBookData(title, author, publisher, isbn, publicationYear)) {
-                        System.out.println("Error. title, author, publisher, isbn and publication year must be valid.");
-                        break;
+                            if (!isValidIsbn10 && !isValidIsbn13) {
+                                System.out.println("Invalid ISBN format. Enter a valid ISBN.\nFor example:\nISBN 10: 0-19-852663-6" + "\nISBN 13: 978-3-16-148410-0");
+                                isbn = ""; // Forzar repetir el bucle
+                            }
+                        }
+                    //PublicationYear
+                        publicationYear = null;
+                        while (publicationYear == null) {
+                            System.out.print("Enter book publication year (yyyy): ");
+                            String yearInput = scanner.nextLine().trim();
+                            if (!yearInput.matches("\\d{4}")) {
+                                System.out.println("Invalid year. Please enter a 4-digit year (e.g. 2022).");
+                                continue;
+                            }
+                            try {
+                                publicationYear = Year.parse(yearInput);
+                            } catch (Exception e) {
+                                System.out.println("Error parsing year. Please try again.");
+                            }
+                        }
+                     // new book add
+                        book = new Book(title, author, publisher, isbn, publicationYear);
+                        library.addBook(book);
+                        System.out.println((book.getTitle()) + " by " + (book.getAuthor()) + " added successfully.");
+                        System.out.println("Assigned Book ID: " + book.getBookID());
+                        System.out.println("Entry date: " + book.getAddedToLibrary());
+                        break;}
+                        //
+                        case 2:
+                            System.out.print("Enter user name: ");
+                            String name = scanner.nextLine();
+                            System.out.print("Enter user ID: ");
+                            id = scanner.nextInt();
+                            user = new User(name, id);
+                            library.addUser(user);
+                            break;
+                        case 3:
+                            System.out.print("Enter user ID: ");
+                            id = scanner.nextInt();
+                            scanner.nextLine(); // Consume newline
+                            System.out.print("Enter book title: ");
+                            title = scanner.nextLine();
+                            user = library.getUserById(id);
+                            book = library.searchBookByTitle(title);
+                            if (user != null && book != null) {
+                                library.borrowBook(user, book);
+                            } else {
+                                System.out.println("User or book not found.");
+                            }
+                            break;
+                        case 4:
+                            System.out.print("Enter user ID: ");
+                            id = scanner.nextInt();
+                            scanner.nextLine(); // Consume newline
+                            System.out.print("Enter book title: ");
+                            title = scanner.nextLine();
+                            user = library.getUserById(id);
+                            book = library.searchBookByTitle(title);
+                            if (user != null && book != null) {
+                                library.returnBook(user, book);
+                            } else {
+                                System.out.println("User or book not found.");
+                            }
+                            break;
+                        case 5:
+                            System.out.print("Enter book title: ");
+                            title = scanner.nextLine();
+                            book = library.searchBookByTitle(title);
+                            if (book != null) {
+                                System.out.println(book);
+                            } else {
+                                System.out.println("Book not found.");
+                            }
+                            break;
+                        case 6:
+                            System.out.print("Enter book author: ");
+                            author = scanner.nextLine();
+                            book = library.searchBookByAuthor(author);
+                            if (book != null) {
+                                System.out.println(book);
+                            } else {
+                                System.out.println("Book not found.");
+                            }
+                            break;
+                        case 7:
+                            library.listAvailableBooks();
+                            break;
+                        case 8:
+                            library.listUsers();
+                            break;
+                        case 9:
+                            exit = true;
+                            break;
+                        default:
+                            System.out.println("Invalid option.");
                     }
-                    book = new Book(title, author, publisher, isbn, publicationYear);
-                    library.addBook(book);
-                    System.out.println(book.getTitle() + " added successfully.");
-                    System.out.println("Assigned Book ID: " + book.getBookID());
-                    System.out.println("Entry date: " + book.getAddedToLibrary());
-                    break;
-                case 2:
-                    System.out.print("Enter user name: ");
-                    String name = scanner.nextLine();
-                    System.out.print("Enter user ID: ");
-                    id = scanner.nextInt();
-                    user = new User(name, id);
-                    library.addUser(user);
-                    break;
-                case 3:
-                    System.out.print("Enter user ID: ");
-                    id = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline
-                    System.out.print("Enter book title: ");
-                    title = scanner.nextLine();
-                    user = library.getUserById(id);
-                    book = library.searchBookByTitle(title);
-                    if (user != null && book != null) {
-                        library.borrowBook(user, book);
-                    } else {
-                        System.out.println("User or book not found.");
-                    }
-                    break;
-                case 4:
-                    System.out.print("Enter user ID: ");
-                    id = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline
-                    System.out.print("Enter book title: ");
-                    title = scanner.nextLine();
-                    user = library.getUserById(id);
-                    book = library.searchBookByTitle(title);
-                    if (user != null && book != null) {
-                        library.returnBook(user, book);
-                    } else {
-                        System.out.println("User or book not found.");
-                    }
-                    break;
-                case 5:
-                    System.out.print("Enter book title: ");
-                    title = scanner.nextLine();
-                    book = library.searchBookByTitle(title);
-                    if (book != null) {
-                        System.out.println(book);
-                    } else {
-                        System.out.println("Book not found.");
-                    }
-                    break;
-                case 6:
-                    System.out.print("Enter book author: ");
-                    author = scanner.nextLine();
-                    book = library.searchBookByAuthor(author);
-                    if (book != null) {
-                        System.out.println(book);
-                    } else {
-                        System.out.println("Book not found.");
-                    }
-                    break;
-                case 7:
-                    library.listAvailableBooks();
-                    break;
-                case 8:
-                    library.listUsers();
-                    break;
-                case 9:
-                    exit = true;
-                    break;
-                default:
-                    System.out.println("Invalid option.");
             }
+
+            scanner.close();
         }
-
-        scanner.close();
     }
-}
-
